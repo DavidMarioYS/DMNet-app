@@ -1,174 +1,91 @@
+
+
 # 🌐 IP DMNet - Professional Network Suite
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 
-**IP DMNet** (sebelumnya IP MasterHub) adalah aplikasi web komprehensif yang dirancang khusus untuk mahasiswa IT, pelajar, dan teknisi jaringan (Network Engineer). Aplikasi ini menyediakan berbagai alat mulai dari kalkulator jaringan presisi hingga asisten AI (Artificial Intelligence) untuk membantu memecahkan masalah seputar pengalamatan IP.
+**IP DMNet** adalah aplikasi web komprehensif yang dirancang untuk mempermudah kalkulasi jaringan bagi mahasiswa IT dan Network Engineer. Kini hadir dengan arsitektur **Serverless** untuk performa yang lebih cepat dan handal.
 
 ---
 
 ## 🚀 Live Preview
 
-Anda dapat langsung mencoba dan menggunakan aplikasi ini secara online melalui tautan berikut:
-👉 **[https://dm-net-app.vercel.app/](https://dm-net-app.vercel.app/)**
+Aplikasi dapat diakses secara real-time melalui tautan permanen berikut:
+👉 **[https://dm-net-app.vercel.app](https://dm-net-app.vercel.app)**
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Fitur Unggulan
 
-- **🔢 Kalkulator IP Presisi (IPv4 & IPv6)**
-  Analisis jaringan lengkap yang menampilkan Network ID, Broadcast, Subnet Mask, dan Range Usable Host. Telah mendukung perhitungan skalabilitas tinggi IPv6 (BigInt).
-- **✨ Smart Advisor**
-  Sistem cerdas yang dapat merekomendasikan Prefix (Subnet Mask) paling efisien berdasarkan jumlah host yang dibutuhkan, lengkap dengan visualisasi persentase efisiensi IP.
-- **⚡ VLSM Planner (Variable Length Subnet Mask)**
-  Kalkulator otomatis untuk merancang arsitektur jaringan berbagai divisi tanpa membuang-buang (waste) IP.
-- **🗂️ FLSM Divider (Fixed Length Subnet Mask)**
-  Pemecah jaringan utama menjadi beberapa subnet dengan ukuran yang sama rata.
-- **💾 Export to CSV**
-  Setiap hasil tabel VLSM dan FLSM dapat langsung diunduh dalam format `.csv` untuk laporan atau dokumentasi topologi jaringan.
-- **📖 Ensiklopedia Jaringan**
-  Modul edukasi terintegrasi yang menjelaskan teori dasar IP, Anatomi Subnetting, IP Khusus (Loopback, APIPA), Protokol (DNS, DHCP, NAT), dan studi kasus dunia nyata.
-- **🤖 Asisten AI DMNet (Powered by Groq Llama-3)**
-  Chatbot pintar yang terintegrasi di pojok layar untuk menjawab segala pertanyaan seputar jaringan komputer secara instan (*real-time*).
-- **🌍 Dukungan Bilingual**
-  Sistem dapat diubah bahasanya antara Bahasa Indonesia dan Bahasa Inggris dengan sekali klik.
+- **🔢 Kalkulator IP Modern:** Analisis lengkap IPv4 dan IPv6 (Network ID, Broadcast, Range Host).
+- **⚡ Smart Advisor:** Rekomendasi prefix paling efisien berdasarkan kebutuhan jumlah host.
+- **🗺️ Planner Otomatis:** Mendukung pembagian jaringan menggunakan metode **VLSM** dan **FLSM**.
+- **💾 Export Data:** Unduh hasil perencanaan jaringan langsung ke format `.csv`.
+- **🤖 Asisten AI DMNet:** Chatbot pintar bertenaga **Groq Llama 3.3** yang siap menjawab pertanyaan seputar networking secara instan.
+- **🌍 Multi-Bahasa:** Tersedia dalam Bahasa Indonesia dan English.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ Stack Teknologi
 
-**Frontend:**
-
-- HTML5 & CSS3
-- Vanilla JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) (via CDN) untuk UI/UX modern ala *glassmorphism*.
-- Font: *Plus Jakarta Sans* (Google Fonts).
-
-**Backend & API:**
-
-- [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/) (Menangani *routing* dan komunikasi API aman).
-- [Groq API](https://groq.com/) (Menggunakan model AI `llama3-8b-8192` yang super cepat).
+- **Frontend:** HTML5, Vanilla JavaScript, Tailwind CSS (Modern Glassmorphism UI).
+- **Backend:** Node.js (Vercel Serverless Functions).
+- **AI Engine:** [Groq Cloud API](https://groq.com/) dengan model `llama-3.3-70b-versatile`.
 
 ---
 
-## 🚀 Cara Instalasi & Menjalankan di Komputer Lokal
+## 🚀 Instalasi Lokal
 
-Jika Anda ingin menjalankan atau mengembangkan proyek ini di komputer Anda sendiri, ikuti langkah-langkah berikut:
-
-### Prasyarat
-
-Pastikan Anda sudah menginstal [Node.js](https://nodejs.org/) di komputer Anda.
-
-### Langkah-langkah
-
-1. **Clone repositori ini:**
-
+1. **Clone Repository:**
    ```bash
    git clone [https://github.com/DavidMarioYS/DMNet-app.git](https://github.com/DavidMarioYS/DMNet-app.git)
-   cd DMNet-app
    ```
-2. **Instal dependensi (library backend):**
-   **Bash**
 
-```
-   npm install
-```
 
-3. **Atur API Key rahasia:**
-   Buat sebuah file bernama `.env` di direktori utama proyek, lalu tambahkan API Key Groq Anda:
+2. **Setup API Key:**
+   Buat file `.env` dan masukkan key Groq Anda:
    **Code snippet**
 
    ```
-   GROQ_API_KEY=gsk_masukkan_api_key_groq_anda_disini
+   GROQ_API_KEY=gsk_xxx...
    ```
-4. **Jalankan Server:**
+3. **Run Server:**
    **Bash**
 
    ```
+   npm install
    npm start
    ```
-5. Buka browser web dan kunjungi:
-   👉 `http://localhost:3000/cal-ip.html`
 
 ---
 
-## ☁️ Panduan Deployment (Hosting)
+## ☁️ Deployment ke Vercel
 
-Proyek ini telah dikonfigurasi agar siap di-*deploy* ke layanan hosting Node.js seperti  **Railway** , Render, atau Vercel.
+Proyek ini sudah dikonfigurasi untuk  **Vercel Serverless** :
 
-**Untuk Railway:**
-
-1. Hubungkan akun GitHub Anda ke [Railway](https://railway.app/).
-2. Buat proyek baru -> *Deploy from GitHub Repo* -> Pilih `DMNet-app`.
-3. Masuk ke menu Service -> Tab **Variables** -> Tambahkan:
-   * `GROQ_API_KEY` : `[isi dengan API Key Anda]`
-4. Masuk ke tab **Settings** -> **Networking** -> Klik  *Generate Domain* .
-5. Aplikasi Anda akan hidup secara otomatis.
-
----
-
-## 🔒 Catatan Keamanan
-
-File `.env` yang berisi *API Key* **TIDAK BOLEH** di-*commit* atau di-push ke GitHub demi keamanan akun Anda. Proyek ini sudah menyertakan konfigurasi `.gitignore` yang secara otomatis mengabaikan file `.env` dan folder `node_modules/`.
+1. Hubungkan GitHub ke Vercel.
+2. Masukkan `GROQ_API_KEY` di tab **Environment Variables** pada dashboard Vercel.
+3. Jalur API otomatis terarah ke `/api/ask`.
 
 ---
 
 ## 👨‍💻 Penulis
 
-Dikembangkan dengan 🩵 oleh  **David Mario Yohanes** .
+Developed with 🩵 by  **David Mario Yohanes** .
 
 ```
 
+***
+
+### Langkah Terakhir di Terminal:
+Setelah menyimpan file tersebut, jalankan perintah ini agar tampilan di halaman utama GitHub kamu berubah menjadi keren:
+
+```bash
+git add README.md
+git commit -m "final update: readme professional version"
+git push origin main
 ```
-
-2. **Instal dependensi (library backend):**
-   **Bash**
-
-   ```
-   npm install
-   ```
-3. **Atur API Key rahasia:**
-   Buat sebuah file bernama `.env` di direktori utama proyek, lalu tambahkan API Key Groq Anda:
-   **Code snippet**
-
-   ```
-   GROQ_API_KEY=gsk_masukkan_api_key_groq_anda_disini
-   ```
-4. **Jalankan Server:**
-   **Bash**
-
-   ```
-   npm start
-   ```
-5. Buka browser web dan kunjungi:
-   👉 `http://localhost:3000/cal-ip.html`
-
----
-
-## ☁️ Panduan Deployment (Hosting)
-
-Proyek ini telah dikonfigurasi agar siap di-*deploy* ke layanan hosting Node.js seperti  **Railway** , Render, atau Vercel.
-
-**Untuk Railway:**
-
-1. Hubungkan akun GitHub Anda ke [Railway](https://railway.app/).
-2. Buat proyek baru -> *Deploy from GitHub Repo* -> Pilih `DMNet-app`.
-3. Masuk ke menu Service -> Tab **Variables** -> Tambahkan:
-   * `GROQ_API_KEY` : `[isi dengan API Key Anda]`
-4. Masuk ke tab **Settings** -> **Networking** -> Klik  *Generate Domain* .
-5. Aplikasi Anda akan hidup secara otomatis.
-
----
-
-## 🔒 Catatan Keamanan
-
-File `.env` yang berisi *API Key* **TIDAK BOLEH** di-*commit* atau di-push ke GitHub demi keamanan akun Anda. Proyek ini sudah menyertakan konfigurasi `.gitignore` yang secara otomatis mengabaikan file `.env` dan folder `node_modules/`.
-
----
-
-## 👨‍💻 Penulis
-
-Dikembangkan dengan 🩵 oleh  **David Mario Yohanes** .
