@@ -1,0 +1,9 @@
+# Jangan upload folder ini (terlalu besar, 100MB+)
+node_modules/
+
+# Jangan upload API Key!
+.env
+
+# File sistem OS
+.DS_Store
+Thumbs.db
