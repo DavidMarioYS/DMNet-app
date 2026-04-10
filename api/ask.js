@@ -1,25 +1,21 @@
-require('dotenv').config(); 
-const express = require('express');
-const cors = require('cors');
+// File: api/ask.js
 const fetch = require('node-fetch');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+module.exports = async function handler(req, res) {
+    // Vercel Serverless hanya menerima request POST untuk chatbot ini
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
+    }
 
-// Melayani file HTML statis
-app.use(express.static(__dirname));
-
-// UBAH NAMA JALUR MENJADI /api/ask AGAR LOLOS DARI ADBLOCKER
-app.post('/api/ask', async (req, res) => {
     try {
         const userMessage = req.body.pertanyaan;
         const lang = req.body.lang || 'id';
         
+        // Mengambil API Key dari Environment Variable Vercel
         const apiKey = process.env.GROQ_API_KEY;
 
         if (!apiKey) {
-            return res.status(500).json({ error: 'API Key Groq belum disetting!' });
+            return res.status(500).json({ error: 'API Key Groq belum disetting di Vercel!' });
         }
 
         const url = 'https://api.groq.com/openai/v1/chat/completions';
@@ -33,7 +29,7 @@ app.post('/api/ask', async (req, res) => {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'llama3-8b-8192', // Menggunakan model Groq yang sangat cepat
+                model: 'llama3-8b-8192', 
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userMessage }
@@ -51,13 +47,7 @@ app.post('/api/ask', async (req, res) => {
         res.status(200).json({ jawaban: replyText });
 
     } catch (error) {
-        console.error("Error Backend:", error);
+        console.error("Error Backend Vercel:", error);
         res.status(500).json({ error: 'Gagal menghubungi AI Groq' });
     }
-});
-
-// UBAH KE PORT DINAMIS MILIK RAILWAY
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`✅ Server MasterHub berjalan di port ${PORT}!`);
-});
+};
