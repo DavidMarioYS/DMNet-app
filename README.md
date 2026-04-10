@@ -1,5 +1,3 @@
-
-
 # 🌐 IP DMNet - Professional Network Suite
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -15,7 +13,7 @@
 ## 🚀 Live Preview
 
 Anda dapat langsung mencoba dan menggunakan aplikasi ini secara online melalui tautan berikut:
-👉 **[dmnet-app-production.up.railway.app/cal-ip.html](https://dmnet-app-production.up.railway.app/cal-ip.html)**
+👉 **[https://dm-net-app.vercel.app/](https://dm-net-app.vercel.app/)**
 
 ---
 
@@ -67,12 +65,11 @@ Pastikan Anda sudah menginstal [Node.js](https://nodejs.org/) di komputer Anda.
 ### Langkah-langkah
 
 1. **Clone repositori ini:**
+
    ```bash
    git clone [https://github.com/DavidMarioYS/DMNet-app.git](https://github.com/DavidMarioYS/DMNet-app.git)
    cd DMNet-app
    ```
-
-
 2. **Instal dependensi (library backend):**
    **Bash**
 
