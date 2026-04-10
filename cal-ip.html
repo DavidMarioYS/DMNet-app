@@ -1655,10 +1655,10 @@
             return id;
         }
 
-        // FUNGSI PENGHUBUNG KE BACKEND (VERCEL)
+        // FUNGSI PENGHUBUNG KE BACKEND (VERCEL/RAILWAY)
         async function fetchLLMResponse(userMessage) {
-            // Memanggil API internal kita sendiri (api/chat.js), BUKAN langsung ke Google
-            const response = await fetch('/api/chat', {
+            // PERHATIKAN: URL /api/chat SUDAH DIGANTI MENJADI /api/ask
+            const response = await fetch('/api/ask', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
