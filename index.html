@@ -1189,16 +1189,8 @@
 
             if(!ip || !ipRegex.test(ip) || isNaN(prefix) || prefix < 0 || prefix > 32) return alert(currentLang==='id'?'Format IPv4 / Prefix tidak valid!':'Invalid IPv4 / Prefix format!');
 
-            const totalHosts = Math.pow(2, 32 - prefix);
-            const usable = (totalHosts - 2 > 0) ? totalHosts - 2 : 0;
-            
-            let baseIpInt = ipToInt(ip);
-            let maskInt = ~((1 << (32 - prefix)) - 1);
-            let netIp = intToIp((baseIpInt & maskInt) >>> 0);
-            let broadIp = intToIp(((baseIpInt & maskInt) >>> 0) + totalHosts - 1);
-            let firstIp = usable > 0 ? intToIp(((baseIpInt & maskInt) >>> 0) + 1) : '-';
-            let lastIp = usable > 0 ? intToIp(((baseIpInt & maskInt) >>> 0) + totalHosts - 2) : '-';
-            let subMask = getMaskFromPrefix(prefix);
+            const { totalAddresses: totalHosts, usableHosts: usable, networkId: netIp, broadcast: broadIp,
+                   firstHost: firstIp, lastHost: lastIp, subnetMask: subMask } = calculateSubnet(ip, prefix);
 
             resArea.className = "lg:col-span-2 glass-card p-4 md:p-8 rounded-[2rem] flex flex-col w-full overflow-hidden";
             resArea.innerHTML = `

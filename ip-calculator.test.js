@@ -12,7 +12,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
     getMaskFromPrefix, getWildcard, ipToInt, intToIp,
-    expandIPv6, compressIPv6, getIPv6Type
+    expandIPv6, compressIPv6, getIPv6Type, calculateSubnet
 } = require('./ip-calculator.js');
 
 // ---------- IPv4 ----------
@@ -100,4 +100,69 @@ test('expandIPv6: menolak alamat 7 grup tanpa "::"', { todo: 'bug: diterima dan 
 
 test('expandIPv6: menolak karakter non-heksadesimal', { todo: 'bug: "zzzz::1" diterima' }, () => {
     assert.equal(expandIPv6('zzzz::1'), null);
+});
+
+// ---------- calculateSubnet (kalkulasi subnet IPv4) ----------
+
+test('calculateSubnet: 192.168.1.10/24', () => {
+    assert.deepEqual(calculateSubnet('192.168.1.10', 24), {
+        totalAddresses: 256, usableHosts: 254,
+        networkId: '192.168.1.0', broadcast: '192.168.1.255',
+        firstHost: '192.168.1.1', lastHost: '192.168.1.254',
+        subnetMask: '255.255.255.0'
+    });
+});
+
+test('calculateSubnet: blok kecil /30 (2 host usable)', () => {
+    assert.deepEqual(calculateSubnet('10.20.30.40', 30), {
+        totalAddresses: 4, usableHosts: 2,
+        networkId: '10.20.30.40', broadcast: '10.20.30.43',
+        firstHost: '10.20.30.41', lastHost: '10.20.30.42',
+        subnetMask: '255.255.255.252'
+    });
+});
+
+test('calculateSubnet: IP di tengah blok dibulatkan ke Network ID yang benar', () => {
+    const r = calculateSubnet('192.168.1.130', 25);
+    assert.equal(r.networkId, '192.168.1.128');
+    assert.equal(r.broadcast, '192.168.1.255');
+    assert.equal(r.usableHosts, 126);
+});
+
+test('calculateSubnet: blok besar /16 dan /8', () => {
+    const b = calculateSubnet('172.16.5.9', 16);
+    assert.equal(b.networkId, '172.16.0.0');
+    assert.equal(b.broadcast, '172.16.255.255');
+    assert.equal(b.usableHosts, 65534);
+
+    const a = calculateSubnet('10.1.2.3', 8);
+    assert.equal(a.networkId, '10.0.0.0');
+    assert.equal(a.broadcast, '10.255.255.255');
+    assert.equal(a.usableHosts, 16777214);
+});
+
+// Karakterisasi perilaku saat ini: /31 dan /32 dilaporkan tanpa host usable (tanda "-").
+// Catatan: RFC 3021 membolehkan /31 untuk link point-to-point dengan 2 alamat terpakai.
+// Itu keputusan desain, bukan bug, jadi tes ini hanya mengunci perilaku yang ada.
+test('calculateSubnet: /31 dan /32 tidak punya host usable', () => {
+    const p31 = calculateSubnet('192.168.1.77', 31);
+    assert.equal(p31.usableHosts, 0);
+    assert.equal(p31.firstHost, '-');
+    assert.equal(p31.lastHost, '-');
+
+    const p32 = calculateSubnet('192.168.1.77', 32);
+    assert.equal(p32.totalAddresses, 1);
+    assert.equal(p32.networkId, '192.168.1.77');
+    assert.equal(p32.broadcast, '192.168.1.77');
+    assert.equal(p32.usableHosts, 0);
+});
+
+// ---------- Bug yang sudah terbukti pada calculateSubnet (todo) ----------
+
+test('calculateSubnet: prefix /0 menghasilkan jaringan 0.0.0.0 - 255.255.255.255', { todo: 'bug: operator shift JS (1 << 32) bernilai 1, mask jadi semua-1' }, () => {
+    const r = calculateSubnet('10.20.30.40', 0);
+    assert.equal(r.networkId, '0.0.0.0');
+    assert.equal(r.broadcast, '255.255.255.255');
+    assert.equal(r.firstHost, '0.0.0.1');
+    assert.equal(r.lastHost, '255.255.255.254');
 });

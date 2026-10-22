@@ -56,9 +56,28 @@
             return "Reserved / Other";
         }
 
+
+        // --- KALKULASI SUBNET IPv4 (dipindah apa adanya dari runBasicCalc di index.html) ---
+        // Input sudah divalidasi pemanggil (format IPv4 dan prefix 0-32).
+        function calculateSubnet(ip, prefix) {
+            const totalAddresses = Math.pow(2, 32 - prefix);
+            const usableHosts = (totalAddresses - 2 > 0) ? totalAddresses - 2 : 0;
+
+            let baseIpInt = ipToInt(ip);
+            let maskInt = ~((1 << (32 - prefix)) - 1);
+            let networkId = intToIp((baseIpInt & maskInt) >>> 0);
+            let broadcast = intToIp(((baseIpInt & maskInt) >>> 0) + totalAddresses - 1);
+            let firstHost = usableHosts > 0 ? intToIp(((baseIpInt & maskInt) >>> 0) + 1) : '-';
+            let lastHost = usableHosts > 0 ? intToIp(((baseIpInt & maskInt) >>> 0) + totalAddresses - 2) : '-';
+            let subnetMask = getMaskFromPrefix(prefix);
+
+            return { totalAddresses, usableHosts, networkId, broadcast, firstHost, lastHost, subnetMask };
+        }
+
         const api = {
             getMaskFromPrefix, getWildcard, ipToInt, intToIp,
-            expandIPv6, compressIPv6, getIPv6Type
+            expandIPv6, compressIPv6, getIPv6Type,
+            calculateSubnet
         };
         if (typeof module !== 'undefined' && module.exports) {
             module.exports = api;          // Node (node --test, CI)
