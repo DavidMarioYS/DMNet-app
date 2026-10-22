@@ -989,6 +989,7 @@
         </div>
     </div>
 
+    <script src="ip-calculator.js"></script>
     <script>
         // --- GLOBAL STATE ---
         let currentVlsmCsv = "";
@@ -1061,51 +1062,6 @@
             
             if (window.innerWidth < 768 && isSidebarOpen) toggleSidebar();
             document.querySelector('main').scrollTop = 0;
-        }
-
-        // --- IPV4 HELPER FUNCTIONS ---
-        function getMaskFromPrefix(prefix) {
-            let mask = []; let p = parseInt(prefix);
-            for (let i = 0; i < 4; i++) {
-                let bits = Math.min(p, 8);
-                mask.push(256 - Math.pow(2, 8 - bits));
-                p -= bits;
-            }
-            return mask.join('.');
-        }
-        function getWildcard(prefix) { return getMaskFromPrefix(prefix).split('.').map(octet => 255 - parseInt(octet)).join('.'); }
-        function ipToInt(ip) { return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet), 0) >>> 0; }
-        function intToIp(int) { return [ (int >>> 24) & 255, (int >>> 16) & 255, (int >>> 8) & 255, int & 255 ].join('.'); }
-
-        // --- IPV6 HELPER FUNCTIONS ---
-        function expandIPv6(ip) {
-            ip = ip.toLowerCase().trim();
-            if (ip === '::') return '0000:0000:0000:0000:0000:0000:0000:0000';
-            let parts = ip.split('::');
-            if (parts.length > 2) return null; 
-            let left = parts[0] ? parts[0].split(':') : [];
-            let right = parts.length === 2 && parts[1] ? parts[1].split(':') : [];
-            let missing = 8 - (left.length + right.length);
-            if(missing < 0) return null;
-            let middle = Array(missing).fill('0000');
-            let full = [...left, ...middle, ...right];
-            return full.map(p => p.padStart(4, '0')).join(':');
-        }
-        function compressIPv6(ip) {
-            let expanded = expandIPv6(ip);
-            if (!expanded) return ip;
-            let parts = expanded.split(':').map(p => parseInt(p, 16).toString(16));
-            return parts.join(':').replace(/(^|:)0(:0)+(?=:|$)/, '::');
-        }
-        function getIPv6Type(expandedIp) {
-            if(expandedIp === "0000:0000:0000:0000:0000:0000:0000:0001") return "Loopback";
-            if(expandedIp === "0000:0000:0000:0000:0000:0000:0000:0000") return "Unspecified";
-            let firstSegment = parseInt(expandedIp.substring(0, 4), 16);
-            if(firstSegment >= 0x2000 && firstSegment <= 0x3FFF) return "Global Unicast";
-            if(firstSegment >= 0xFE80 && firstSegment <= 0xFEBF) return "Link-Local";
-            if(firstSegment >= 0xFC00 && firstSegment <= 0xFDFF) return "Unique Local (ULA)";
-            if(firstSegment >= 0xFF00 && firstSegment <= 0xFFFF) return "Multicast";
-            return "Reserved / Other";
         }
 
         // --- COPY TO CLIPBOARD ---
