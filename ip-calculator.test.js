@@ -80,17 +80,33 @@ test('compressIPv6: deretan nol di akhir alamat', () => {
     assert.equal(compressIPv6('1:0:0:0:0:0:0:0'), '1::');
 });
 
-// ---------- Bug yang sudah terbukti (todo) ----------
+test('compressIPv6: alamat "::" tetap "::"', () => {
+    assert.equal(compressIPv6('::'), '::');
+});
 
-test('compressIPv6: deretan nol di tengah menghasilkan "::" tunggal', { todo: 'bug: keluar "2001:db8:::1" (tiga titik dua)' }, () => {
+test('compressIPv6: Network ID dengan akhiran nol', () => {
+    assert.equal(compressIPv6('2001:0db8:0000:0000:0000:0000:0000:0000'), '2001:db8::');
+});
+
+test('compressIPv6: satu grup nol tunggal TIDAK dikompresi (RFC 5952)', () => {
+    assert.equal(compressIPv6('2001:db8:0:1:1:1:1:1'), '2001:db8:0:1:1:1:1:1');
+});
+
+test('compressIPv6: dua deretan nol sama panjang, pilih yang paling kiri', () => {
+    assert.equal(compressIPv6('2001:0:0:1:0:0:1:1'), '2001::1:0:0:1:1');
+});
+
+// ---------- Bug yang sudah terbukti (yang masih bertanda todo belum diperbaiki) ----------
+
+test('compressIPv6: deretan nol di tengah menghasilkan "::" tunggal', () => {
     assert.equal(compressIPv6('2001:db8::1'), '2001:db8::1');
 });
 
-test('compressIPv6: loopback menjadi "::1"', { todo: 'bug: keluar ":::1" (tiga titik dua)' }, () => {
+test('compressIPv6: loopback menjadi "::1"', () => {
     assert.equal(compressIPv6('::1'), '::1');
 });
 
-test('compressIPv6: memilih deretan nol TERPANJANG (RFC 5952)', { todo: 'bug: memilih deretan nol pertama' }, () => {
+test('compressIPv6: memilih deretan nol TERPANJANG (RFC 5952)', () => {
     assert.equal(compressIPv6('2001:0:0:1:0:0:0:1'), '2001:0:0:1::1');
 });
 
