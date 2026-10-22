@@ -42,8 +42,23 @@
         function compressIPv6(ip) {
             let expanded = expandIPv6(ip);
             if (!expanded) return ip;
-            let parts = expanded.split(':').map(p => parseInt(p, 16).toString(16));
-            return parts.join(':').replace(/(^|:)0(:0)+(?=:|$)/, '::');
+            const groups = expanded.split(':').map(p => parseInt(p, 16).toString(16));
+
+            // RFC 5952: kompres deretan grup nol TERPANJANG (minimal 2 grup);
+            // bila ada dua deretan sama panjang, pilih yang paling kiri.
+            let bestStart = -1, bestLen = 0;
+            for (let i = 0; i < groups.length; ) {
+                if (groups[i] !== '0') { i++; continue; }
+                let j = i;
+                while (j < groups.length && groups[j] === '0') j++;
+                if (j - i > bestLen) { bestStart = i; bestLen = j - i; }
+                i = j;
+            }
+            if (bestLen < 2) return groups.join(':');
+
+            const head = groups.slice(0, bestStart).join(':');
+            const tail = groups.slice(bestStart + bestLen).join(':');
+            return head + '::' + tail;
         }
         function getIPv6Type(expandedIp) {
             if(expandedIp === "0000:0000:0000:0000:0000:0000:0000:0001") return "Loopback";
